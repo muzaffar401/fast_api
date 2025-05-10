@@ -130,27 +130,7 @@ E.g.,
 
 Yeh diagram FastAPI app ke routes aur structure ko show karta hai:
 
-```
-           +--------------------------+
-           |      FastAPI App        |
-           +--------------------------+
-                    |
-        +-----------+-----------+
-        |           |           |
-        v           v           v
-     [GET /]   [GET /greet]   [GET /welcome/{name}]
-        |           |           |
- {"Hello World"}  {"Hello, name"} {"Welcome, name"}
-
-                    |
-                    v
-           [GET /items/{item_id}?details=true/false]
-                    |
-    {"item_id": id, "description": "..."} (if details = true)
-    {"item_id": id} (if details = false)
-```
-
----
+![FastAPI Diagram](images/fastapi_diagram.png)
 
 ## 📦 Final Notes
 
