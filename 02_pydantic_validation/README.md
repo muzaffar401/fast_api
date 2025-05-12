@@ -1,4 +1,4 @@
-![Alt Text](/fastapi.png)
+![Alt Text](fastapi.png)
 
 ## 🧠 What is Pydantic?
 
