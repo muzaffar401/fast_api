@@ -1,12 +1,12 @@
 
 # Example 1: Basic API jo "Hello World" return karti hai
-# from fastapi import FastAPI
+from fastapi import FastAPI
 
-# app = FastAPI()
+app = FastAPI()
 
-# @app.get("/")
-# def home():
-#     return {"message": "Hello World"}
+@app.get("/")
+def home():
+    return {"message": "Hello World"}
 
 
 
@@ -37,12 +37,12 @@
 
 # app = FastAPI()
 
-# @app.get("/items/{item_id}")
-# def read_item(item_id: int, details: bool = False):
-#     if details:
-#         return {"item_id": item_id, "description": "Yeh item bohot achha hai"}
-#     else:
-#         return {"item_id": item_id}
+@app.get("/items/{item_id}")
+def read_item(item_id: int, details: bool = False):
+    if details:
+        return {"item_id": item_id, "description": "Yeh item bohot achha hai"}
+    else:
+        return {"item_id": item_id}
 
 
 
