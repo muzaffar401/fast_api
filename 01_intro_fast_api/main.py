@@ -1,4 +1,3 @@
-
 # Example 1: Basic API jo "Hello World" return karti hai
 from fastapi import FastAPI
 
