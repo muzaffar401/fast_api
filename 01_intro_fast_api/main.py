@@ -11,30 +11,30 @@ def home():
 
 # Example 2: User ka naam lo aur usko welcome karo
 
-# from fastapi import FastAPI
+from fastapi import FastAPI
 
-# app = FastAPI()
+app = FastAPI()
 
-# @app.get("/welcome/{name}")
-# def welcome_user(name: str):
-#     return {"message": f"Welcome, {name}!"}
+@app.get("/welcome/{name}")
+def welcome_user(name: str):
+    return {"message": f"Welcome, {name}!"}
 
 # Example 3: Optional query parameter
 
-# from fastapi import FastAPI
+from fastapi import FastAPI
 
-# app = FastAPI()
+app = FastAPI()
 
-# @app.get("/greet")
-# def greet(name: str = "Guest"):
-#     return {"message": f"Hello, {name}"}
+@app.get("/greet")
+def greet(name: str = "Guest"):
+    return {"message": f"Hello, {name}"}
 
 
 # Example 4: Two parameters (path + query)
 
-# from fastapi import FastAPI
+from fastapi import FastAPI
 
-# app = FastAPI()
+app = FastAPI()
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, details: bool = False):
