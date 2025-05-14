@@ -1,3 +1,5 @@
+![FastAPI Diagram](template.png)
+
 # FASTAPI Drawing App - README
 
 ## 🌟 What is This Project?

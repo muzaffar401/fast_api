@@ -130,7 +130,7 @@ E.g.,
 
 Yeh diagram FastAPI app ke routes aur structure ko show karta hai:
 
-![FastAPI Diagram](images/fastapi_diagram.png)
+![FastAPI Diagram](fastapi_diagram.png)
 
 ## 📦 Final Notes
 
