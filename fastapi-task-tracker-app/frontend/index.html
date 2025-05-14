@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #5b21b6;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --light: #f1f5f9;
+            --gray: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card-body {
+            color: white;
+        }
+
+        .text-muted{
+            color: white !important;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--dark);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .section {
+            padding: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
+            color: var(--light);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        /* Placeholder text color */
+        ::placeholder {
+            /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: rgba(255, 255, 255, 0.7) !important;
+            opacity: 1;
+            /* Firefox */
+        }
+
+        :-ms-input-placeholder {
+            /* Internet Explorer 10-11 */
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        ::-ms-input-placeholder {
+            /* Microsoft Edge */
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        /* For select dropdown placeholder */
+        select:invalid {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status.pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .status.in_progress {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .status.completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .status.cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-out {
+            animation: fadeOut 0.3s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-tasks me-2"></i>Task Tracker</h1>
+            <p class="mb-0">Manage your users and their tasks efficiently</p>
+        </header>
+
+        <!-- User Section -->
+        <div class="section">
+            <h2><i class="fas fa-users me-2"></i>Users</h2>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter username">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter email">
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="createUser()"><i class="fas fa-user-plus me-2"></i>Create
+                User</button>
+
+            <div id="users-list" class="mt-4 row row-cols-1 row-cols-md-2 g-4">
+                <!-- Users will be loaded here -->
+                <div class="empty-state col-12">
+                    <i class="fas fa-user-friends fa-3x mb-3"></i>
+                    <p>No users found</p>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="fetchUsers()"><i
+                            class="fas fa-sync-alt me-1"></i>Refresh</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="section">
+            <h2><i class="fas fa-tasks me-2"></i>Tasks</h2>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="user-select" class="form-label">User</label>
+                        <select class="form-select" id="user-select">
+                            <option value="">Select User</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="task-title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="task-title" placeholder="Enter task title">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="task-desc" class="form-label">Description</label>
+                        <textarea class="form-control" id="task-desc" rows="3"
+                            placeholder="Enter task description"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="task-due" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="task-due">
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="createTask()"><i class="fas fa-plus me-2"></i>Create Task</button>
+
+            <div id="tasks-list" class="mt-4 row row-cols-1 row-cols-md-2 g-4">
+                <!-- Tasks will be loaded here -->
+                <div class="empty-state col-12">
+                    <i class="fas fa-clipboard-list fa-3x mb-3"></i>
+                    <p>No tasks found</p>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="fetchUserTasks()"><i
+                            class="fas fa-sync-alt me-1"></i>Refresh</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const API_URL = 'http://localhost:8000';
+
+        // Load users when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchUsers();
+        });
+
+        // Fetch all users
+        async function fetchUsers() {
+            try {
+                const response = await fetch(`${API_URL}/users/`);
+                if (!response.ok) throw new Error('Failed to fetch users');
+
+                const usersData = await response.json();
+                const users = Object.values(usersData);
+
+                const usersList = document.getElementById('users-list');
+                usersList.innerHTML = '';
+
+                if (users.length === 0) {
+                    usersList.innerHTML = `
+                        <div class="empty-state col-12">
+                            <i class="fas fa-user-friends fa-3x mb-3"></i>
+                            <p>No users found</p>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="fetchUsers()"><i class="fas fa-sync-alt me-1"></i>Refresh</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                users.forEach(user => {
+                    const userCard = document.createElement('div');
+                    userCard.className = 'col fade-in';
+                    userCard.innerHTML = `
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">${user.username}</h5>
+                                <p class="card-text">${user.email}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">ID: ${user.id}</small>
+                                </div>
+                                <div class="mt-3 d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button class="btn btn-sm btn-outline-primary me-md-2" onclick="fetchUserTasks('${user.id}')">
+                                        <i class="fas fa-tasks me-1"></i>View Tasks
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteUser('${user.id}')">
+                                        <i class="fas fa-trash me-1"></i>Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    usersList.appendChild(userCard);
+                });
+
+                populateUserSelect(users);
+
+            } catch (error) {
+                console.error('Error fetching users:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load users. Please try again.',
+                });
+            }
+        }
+
+        // Populate user dropdown
+        function populateUserSelect(users) {
+            const select = document.getElementById('user-select');
+            select.innerHTML = '<option value="">Select User</option>';
+
+            users.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.id;
+                option.textContent = user.username;
+                select.appendChild(option);
+            });
+        }
+
+        // Create a new user
+        async function createUser() {
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            if (!username || !email) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Validation Error',
+                    text: 'Please fill in all fields',
+                });
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/users/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username,
+                        email
+                    }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Failed to create user');
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'User created successfully!',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                document.getElementById('username').value = '';
+                document.getElementById('email').value = '';
+
+                fetchUsers();
+
+            } catch (error) {
+                console.error('Error creating user:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Failed to create user',
+                });
+            }
+        }
+
+        // Create a new task
+        async function createTask() {
+            const userId = document.getElementById('user-select').value;
+            const title = document.getElementById('task-title').value.trim();
+            const description = document.getElementById('task-desc').value.trim();
+            const dueDate = document.getElementById('task-due').value;
+
+            if (!userId || !title || !dueDate) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Validation Error',
+                    text: 'Please select a user and fill in required fields',
+                });
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/tasks/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title,
+                        description,
+                        due_date: dueDate,
+                        status: 'pending',
+                        user_id: userId
+                    }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Failed to create task');
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Task created successfully!',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                document.getElementById('task-title').value = '';
+                document.getElementById('task-desc').value = '';
+                document.getElementById('task-due').value = '';
+
+                fetchUserTasks(userId);
+
+            } catch (error) {
+                console.error('Error creating task:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Failed to create task',
+                });
+            }
+        }
+
+        // Fetch tasks for a specific user
+        async function fetchUserTasks(userId = null) {
+            if (!userId) {
+                userId = document.getElementById('user-select').value;
+                if (!userId) return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/users/${userId}/tasks`);
+                if (!response.ok) throw new Error('Failed to fetch tasks');
+
+                const tasks = await response.json();
+
+                const tasksList = document.getElementById('tasks-list');
+                tasksList.innerHTML = '';
+
+                if (tasks.length === 0) {
+                    tasksList.innerHTML = `
+                        <div class="empty-state col-12">
+                            <i class="fas fa-clipboard-list fa-3x mb-3"></i>
+                            <p>No tasks found for this user</p>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="fetchUserTasks('${userId}')">
+                                <i class="fas fa-sync-alt me-1"></i>Refresh
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                tasks.forEach(task => {
+                    const taskCard = document.createElement('div');
+                    taskCard.className = 'col fade-in';
+                    taskCard.setAttribute('data-task-id', task.id);
+                    taskCard.innerHTML = `
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">${task.title}</h5>
+                                <p class="card-text">${task.description || 'No description provided'}</p>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <small class="text-muted">Due: ${task.due_date}</small>
+                                    <span class="status ${task.status}">${task.status.replace('_', ' ')}</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <select class="form-select form-select-sm me-2 status-select" 
+                                            id="status-${task.id}" 
+                                            onchange="updateTaskStatus('${task.id}', this.value)">
+                                        <option value="pending" ${task.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                        <option value="in_progress" ${task.status === 'in_progress' ? 'selected' : ''}>In Progress</option>
+                                        <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>Completed</option>
+                                        <option value="cancelled" ${task.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                                    </select>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteTask('${task.id}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    tasksList.appendChild(taskCard);
+                });
+
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load tasks. Please try again.',
+                });
+            }
+        }
+
+        // Update task status
+        async function updateTaskStatus(taskId, newStatus) {
+            try {
+                const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        status: newStatus
+                    }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Failed to update task status');
+                }
+
+                // Update the UI
+                const statusBadge = document.querySelector(`#status-${taskId}`).closest('.card').querySelector('.status');
+                statusBadge.className = `status ${newStatus}`;
+                statusBadge.textContent = newStatus.replace('_', ' ');
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Status Updated',
+                    text: `Task status changed to ${newStatus.replace('_', ' ')}`,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+            } catch (error) {
+                console.error('Error updating task status:', error);
+
+                // Revert the select to previous value
+                const select = document.getElementById(`status-${taskId}`);
+                const previousStatus = select.dataset.previousValue;
+                if (previousStatus) {
+                    select.value = previousStatus;
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Update Failed',
+                    text: error.message || 'Failed to update task status',
+                });
+            }
+        }
+
+        // Delete a user
+        async function deleteUser(userId) {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            });
+
+            if (!result.isConfirmed) return;
+
+            try {
+                const response = await fetch(`${API_URL}/users/${userId}`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Failed to delete user');
+                }
+
+                Swal.fire(
+                    'Deleted!',
+                    'User has been deleted.',
+                    'success'
+                );
+
+                fetchUsers();
+
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Failed to delete user',
+                });
+            }
+        }
+
+        // Delete a task
+        async function deleteTask(taskId) {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            });
+
+            if (!result.isConfirmed) return;
+
+            try {
+                const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Failed to delete task');
+                }
+
+                Swal.fire(
+                    'Deleted!',
+                    'Task has been deleted.',
+                    'success'
+                );
+
+                // Remove the task card from UI
+                const taskCard = document.querySelector(`[data-task-id="${taskId}"]`);
+                if (taskCard) {
+                    taskCard.classList.add('fade-out');
+                    setTimeout(() => taskCard.remove(), 300);
+                }
+
+            } catch (error) {
+                console.error('Error deleting task:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Failed to delete task',
+                });
+            }
+        }
+
+        // Store previous status values for reverting if update fails
+        document.addEventListener('change', function (e) {
+            if (e.target.classList.contains('status-select')) {
+                e.target.dataset.previousValue = e.target.value;
+            }
+        });
+    </script>
+</body>
+
+</html>
